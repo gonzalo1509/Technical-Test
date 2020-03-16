@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.technicaltest.technicaltest"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.androidx_appcompat_version"
+    implementation "androidx.core:core-ktx:$rootProject.ext.androidx_core_version"
+    testImplementation "junit:junit:$rootProject.ext.junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.androidx_test_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.androidx_test_espresso"
+
+    // Retrofit & RX
+    //implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofit2_version"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttp3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava_version"
+}
