@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -17,9 +18,15 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField "String", "MEET_API_BASE_URL", "\"https://apidev.meep.me\""
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "MEET_API_BASE_URL", "\"https://apidev.meep.me\""
         }
     }
 
@@ -27,19 +34,34 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$rootProject.ext.androidx_appcompat_version"
-    implementation "androidx.core:core-ktx:$rootProject.ext.androidx_core_version"
-    testImplementation "junit:junit:$rootProject.ext.junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.androidx_test_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.androidx_test_espresso"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
+    implementation "androidx.appcompat:appcompat:${androidx_appcompat_version}"
+    implementation "androidx.core:core-ktx:${androidx_core_version}"
+    testImplementation "junit:junit:${junit_version}"
+    androidTestImplementation "androidx.test.ext:junit:${androidx_test_junit_version}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${androidx_test_espresso}"
 
     // Retrofit & RX
-    //implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofit2_version"
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttp3_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava_version"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofit2_version}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit2_version}"
+    implementation "com.squareup.okhttp3:okhttp:${okhttp3_version}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${okhttp3_version}"
+    implementation "io.reactivex.rxjava2:rxandroid:${rxandroid_version}"
+    implementation "io.reactivex.rxjava2:rxjava:${rxjava_version}"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:${dagger_version}"
+    kapt "com.google.dagger:dagger-compiler:${dagger_version}"
+    kapt "com.google.dagger:dagger-android-processor:${dagger_version}"
+
+    // Logs
+    implementation "org.slf4j:slf4j-api:${slfj4_version}"
+    implementation "com.github.tony19:logback-android:${logback_android_version}"
+    testImplementation "ch.qos.logback:logback-classic:${logback_classic_version}"
+
+    // View Modelsandroid_arch_lifecycle_version
+    implementation "android.arch.lifecycle:runtime:${android_arch_lifecycle_version}"
+    implementation "android.arch.lifecycle:extensions:${android_arch_lifecycle_version}"
+    annotationProcessor "android.arch.lifecycle:compiler:${android_arch_lifecycle_version}"
+
 }
