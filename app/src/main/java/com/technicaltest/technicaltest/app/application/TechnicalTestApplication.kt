@@ -2,7 +2,7 @@ package com.technicaltest.technicaltest.app.application
 
 import android.app.Application
 import android.content.ContentValues.TAG
-import com.orange.agentsdk.Utilities.ApplicationUtilities.Log.CustomLog
+import android.util.Log
 import com.technicaltest.technicaltest.dataSources.dagger.components.AppComponent
 import com.technicaltest.technicaltest.dataSources.dagger.components.DaggerAppComponent
 import com.technicaltest.technicaltest.dataSources.dagger.modules.AppModule
@@ -19,7 +19,7 @@ class TechnicalTestApplication: Application() {
         super.onCreate()
         technicalTestApplication = this
 
-        CustomLog.d(TAG, ">>> ON CREATE >>>")
+        Log.d(TAG, ">>> ON CREATE >>>")
         super.onCreate()
 
         createAppComponent()
