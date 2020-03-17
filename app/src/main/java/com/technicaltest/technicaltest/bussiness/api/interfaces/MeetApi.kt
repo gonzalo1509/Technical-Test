@@ -1,5 +1,6 @@
 package com.technicaltest.technicaltest.bussiness.api.interfaces
 
+import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -13,5 +14,5 @@ interface MeetApi {
     fun getMobilitiesResources(@Path("location") location: String,
                                @Query("lowerLeftLatLon") lowerLeftLatLon: String,
                                @Query("upperRightLatLon") upperRightLatLon: String)
-                                : Single<Response<ResponseBody?>>
+                                : Single<List<MobilitieResourceResponseEntitie?>>
 }

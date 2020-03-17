@@ -13,7 +13,7 @@ object RetrofitClient {
     fun provideRetrofitClientMeetApi(): MeetApi {
         val httpClientBuilder = OkHttpClient.Builder().cache(null)
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
         httpClientBuilder.addInterceptor(httpLoggingInterceptor)
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.MEET_API_BASE_URL)

@@ -1,15 +1,14 @@
 package com.technicaltest.technicaltest.app.viewModels.map
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.orange.agentsdk.Utilities.ApplicationUtilities.Log.CustomLog
 import com.technicaltest.technicaltest.app.application.TechnicalTestApplication
+import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
 import com.technicaltest.technicaltest.bussiness.useCases.mobilitieResources.MobilitieResourcesUseCase
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.ResponseBody
-import retrofit2.Response
 import javax.inject.Inject
 
 class MapViewModel: ViewModel() {
@@ -27,17 +26,17 @@ class MapViewModel: ViewModel() {
     lateinit var mobilitieResourcesUseCase: MobilitieResourcesUseCase
 
     // MutableLiveData
-    private val getMobilitieResources: MutableLiveData<Response<ResponseBody>>  =
+    private val getMobilitieResourcesLiveData: MutableLiveData<List<MobilitieResourceResponseEntitie>> =
         MutableLiveData()
 
     override fun onCleared() {
         if (!disposables.isDisposed) disposables.dispose()
         super.onCleared()
-        CustomLog.d(TAG, "On cleared called")
+        Log.d(TAG, "On cleared called")
     }
 
-    fun getMobilitieResources(): LiveData<Response<ResponseBody>>  {
-        return getMobilitieResources
+    fun getMobilitieResourcesLiveData(): MutableLiveData<List<MobilitieResourceResponseEntitie>>  {
+        return getMobilitieResourcesLiveData
     }
 
     fun doGetMobilitieResources(location: String, lowerLeftLatLon: String, upperRightLatLon: String) {
@@ -49,8 +48,8 @@ class MapViewModel: ViewModel() {
             mobilitieResourcesUseCase.getMobilitiesResources(location, lowerLeftLatLon, upperRightLatLon)
             .subscribeOn(Schedulers.io())
             .subscribe(
-                { getMobilitieResources::postValue },
-                { error -> CustomLog.e(TAG, "Ocurrió un error al obtener los recursos de movilidad", error) }
+                { response-> getMobilitieResourcesLiveData.postValue(response as List<MobilitieResourceResponseEntitie>?) },
+                { error -> Log.e(TAG, "Ocurrió un error al obtener los recursos de movilidad", error) }
             )
         )
     }

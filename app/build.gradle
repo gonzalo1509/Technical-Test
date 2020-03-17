@@ -64,4 +64,8 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${android_arch_lifecycle_version}"
     annotationProcessor "android.arch.lifecycle:compiler:${android_arch_lifecycle_version}"
 
+    // Maps
+    implementation "com.google.android.gms:play-services-maps:${play_services_version}"
+    implementation "com.google.android.gms:play-services-location:${play_services_version}"
+
 }
