@@ -1,7 +1,7 @@
 package com.technicaltest.technicaltest.app.services.retrofit
 
 import com.technicaltest.technicaltest.BuildConfig
-import com.technicaltest.technicaltest.bussiness.api.interfaces.MeetApi
+import com.technicaltest.technicaltest.dataSources.meep.Interfaces.MeetApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,6 +21,7 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-        return retrofit.create<MeetApi>(MeetApi::class.java)
+        return retrofit.create<MeetApi>(
+            MeetApi::class.java)
     }
 }

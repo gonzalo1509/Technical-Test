@@ -1,4 +1,4 @@
-package com.technicaltest.technicaltest.bussiness.api.interfaces
+package com.technicaltest.technicaltest.dataSources.meep.Interfaces
 
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
 import io.reactivex.Single
