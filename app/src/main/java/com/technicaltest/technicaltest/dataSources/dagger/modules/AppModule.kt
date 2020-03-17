@@ -2,7 +2,8 @@ package com.technicaltest.technicaltest.dataSources.dagger.modules
 
 import com.technicaltest.technicaltest.app.application.TechnicalTestApplication
 import com.technicaltest.technicaltest.app.services.retrofit.RetrofitClient
-import com.technicaltest.technicaltest.bussiness.api.interfaces.MeetApi
+import com.technicaltest.technicaltest.app.viewModels.map.MapViewModel
+import com.technicaltest.technicaltest.dataSources.meep.Interfaces.MeetApi
 import com.technicaltest.technicaltest.bussiness.useCases.mobilitieResources.MobilitieResourcesUseCase
 import com.technicaltest.technicaltest.dataSources.meep.dataSources.mobilitieResources.MobilitieResourcesDataSource
 import dagger.Module
@@ -42,5 +43,11 @@ class AppModule (private val technicalTestApplication: TechnicalTestApplication)
     @Singleton
     internal fun provideRetrofitClientMeepApi(): MeetApi {
         return RetrofitClient.provideRetrofitClientMeetApi()
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideMapViewModel(): MapViewModel {
+        return MapViewModel()
     }
 }
