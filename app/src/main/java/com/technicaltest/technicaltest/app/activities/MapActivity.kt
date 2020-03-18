@@ -11,27 +11,39 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.technicaltest.technicaltest.R
+import com.technicaltest.technicaltest.app.application.TechnicalTestApplication
+import com.technicaltest.technicaltest.app.customViews.map.CustomMarkerInfoWindowView
 import com.technicaltest.technicaltest.app.viewModels.map.MapViewModel
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
-import com.technicaltest.technicaltest.utilities.enums.CompanyZoneIdTypes
+import com.technicaltest.technicaltest.utilities.helpers.LoadingHelper
+import com.technicaltest.technicaltest.bussiness.enums.CompanyZoneIdTypes
 import kotlinx.android.synthetic.main.activity_map_layout.*
+import retrofit2.Response
 import javax.inject.Inject
 
-class MapActivity: AppCompatActivity(), OnMapReadyCallback,
-                                        GoogleMap.OnMarkerClickListener{
+class MapActivity: AppCompatActivity(), OnMapReadyCallback{
+
+    init {
+        TechnicalTestApplication.technicalTestApplication.appComponent.inject(this)
+    }
 
     val TAG: String = MapActivity::class.java.simpleName
 
     @Inject
     lateinit var mapViewModel: MapViewModel
 
+    @Inject
+    lateinit var loadingHelper: LoadingHelper
+
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
+        Log.v(TAG, "init onCreate")
         setContentView(R.layout.activity_map_layout)
+
+        loadingHelper.initLoading(this)
 
         mapFragment = map as SupportMapFragment
         configMap()
@@ -39,51 +51,97 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback,
         initializeViewModel()
     }
 
+    override fun onResume() {
+        Log.v(TAG, "init onResume")
+
+        loadingHelper.initLoading(this)
+        initializeViewModel()
+
+        super.onResume()
+    }
+
     override fun onMapReady(googleMap: GoogleMap?) {
+        Log.v(TAG, "init onMapReady")
+
         if (googleMap != null) {
             this.googleMap = googleMap
             mapViewModel.doGetMobilitieResources("lisboa","38.711046,-9.160096","38.739429,-9.137115")
         }
     }
 
-    override fun onMarkerClick(marker: Marker?): Boolean {
-        //marker.get
-        return true
-    }
-
     private fun configMap(){
+        Log.v(TAG, "init configMap")
+
         mapFragment.getMapAsync(this)
+
+        mapFragment.getMapAsync { googleMap ->
+            run {
+                val customMarkerInfoWindowView = CustomMarkerInfoWindowView()
+                googleMap.setInfoWindowAdapter(customMarkerInfoWindowView)
+            }
+        }
     }
 
     private fun initializeViewModel(){
+        Log.v(TAG, "init initializeViewModel")
+
         mapViewModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
-        mapViewModel.getMobilitieResourcesLiveData().observe(this, Observer<List<MobilitieResourceResponseEntitie>> {
+
+        mapViewModel.getMobilitieResourcesLiveData().observe(this, Observer<Response<List<MobilitieResourceResponseEntitie>>> {
                 mobilitieResourceDataResponse -> processMobilitieResourcesData(mobilitieResourceDataResponse) })
+
+        mapViewModel.getMobilitieResourcesErrorLiveData().observe(this, Observer<String> {
+                mobilitieResourceErrorDataResponse -> showErrorMessage(mobilitieResourceErrorDataResponse)})
     }
 
-    private fun processMobilitieResourcesData(mobilitieResourceResponse: List<MobilitieResourceResponseEntitie>) {
+    private fun processMobilitieResourcesData(mobilitieResourceResponse: Response<List<MobilitieResourceResponseEntitie>>) {
         Log.v(TAG, "init processMobilitieResourceData")
-        mobilitieResourceResponse.forEach { mobilitieResourceResponseEntitie ->
+
+        if(!mobilitieResourceResponse.isSuccessful){
+            Log.e(TAG, "response code is not successful: ${mobilitieResourceResponse.code()}")
+
+            showErrorMessage("Ocurrió un error al obtener los recursos de movilidad. Inténtalo de nuevo más tarde.")
+            return
+        }
+
+        val mobilitieResourceData: List<MobilitieResourceResponseEntitie>? = mobilitieResourceResponse.body()
+        mobilitieResourceData?.forEach { mobilitieResourceResponseEntitie ->
             addMarker(mobilitieResourceResponseEntitie)
         }
+    }
+
+    private fun showErrorMessage(message: String) {
+        Log.v(TAG, "showErrorMessage")
+
+        loadingHelper.dismissLoading()
+        loadingHelper.initErrorAlert(this, message)
     }
 
     private fun addMarker(mobilitieResourceResponseEntitie: MobilitieResourceResponseEntitie){
         Log.v(TAG, "init addMarker")
 
         val position = LatLng(mobilitieResourceResponseEntitie.lat, mobilitieResourceResponseEntitie.lon)
-        val markerOptions = MarkerOptions()
+        Log.v(TAG, "Go to insert marker in following position, lat: ${mobilitieResourceResponseEntitie.lat}," +
+                " lon: ${mobilitieResourceResponseEntitie.lon}")
 
+        val markerOptions = MarkerOptions()
         markerOptions.position(position)
         markerOptions.title(mobilitieResourceResponseEntitie.name)
         markerOptions.snippet(CompanyZoneIdTypes.lookup(mobilitieResourceResponseEntitie.companyZoneId)?.name)
         markerOptions.icon(getMarkerColor(mobilitieResourceResponseEntitie.companyZoneId))
 
-        googleMap.addMarker(markerOptions)
+        Log.v(TAG, "Marker details, name: ${mobilitieResourceResponseEntitie.name}, " +
+                "snippet: ${CompanyZoneIdTypes.lookup(mobilitieResourceResponseEntitie.companyZoneId)?.name}")
+
+        val marker: Marker = googleMap.addMarker(markerOptions)
+        marker.tag = mobilitieResourceResponseEntitie
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+
+        loadingHelper.dismissLoading()
     }
 
     private fun getMarkerColor(companyZoneId: Int): BitmapDescriptor? {
+        Log.v(TAG, "init getMarkerColor")
         when(CompanyZoneIdTypes.lookup(companyZoneId)){
             CompanyZoneIdTypes.FIRST_TYPE -> {
                 return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)

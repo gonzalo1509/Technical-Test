@@ -3,4 +3,17 @@
 
     <!-- Google Maps Key -->
     <string name="google_maps_key">AIzaSyAeoFHBFZ4n6MtuB7DXkzfpgizOAu0joKg</string>
+    <!-- End Google Maps Key -->
+
+    <!-- Marker Info -->
+    <string name="marker_id">ID:</string>
+    <string name="marker_name">Name:</string>
+    <string name="marker_x">X:</string>
+    <string name="marker_y">Y:</string>
+    <string name="marker_scheduled_arrival">Scheduled Arrival:</string>
+    <string name="marker_location_type">Location Type:</string>
+    <string name="marker_company_zone_id">Company Zone Id:</string>
+    <string name="marker_lat">Latitude:</string>
+    <string name="marker_lon">Longitude:</string>
+    <!-- End Marker Info -->
 </resources>

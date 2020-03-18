@@ -1,4 +1,4 @@
-package com.technicaltest.technicaltest.utilities.enums
+package com.technicaltest.technicaltest.bussiness.enums
 
 enum class CompanyZoneIdTypes(private val companyZoneId: Int) {
     FIRST_TYPE                          (382),

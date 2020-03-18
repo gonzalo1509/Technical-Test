@@ -14,5 +14,5 @@ interface MeetApi {
     fun getMobilitiesResources(@Path("location") location: String,
                                @Query("lowerLeftLatLon") lowerLeftLatLon: String,
                                @Query("upperRightLatLon") upperRightLatLon: String)
-                                : Single<List<MobilitieResourceResponseEntitie?>>
+                                : Single<Response<List<MobilitieResourceResponseEntitie?>>>
 }

@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class MobilitieResourcesUseCase @Inject constructor(private val mobilitieResourcesDataSource: MobilitieResourcesDataSource){
 
-    fun getMobilitiesResources(location: String, lowerLeftLatLon: String, upperRightLatLon: String):  Single<List<MobilitieResourceResponseEntitie?>> {
+    fun getMobilitiesResources(location: String, lowerLeftLatLon: String, upperRightLatLon: String):  Single<Response<List<MobilitieResourceResponseEntitie?>>> {
         return mobilitieResourcesDataSource
             .getMobilitiesResources(location, lowerLeftLatLon, upperRightLatLon)
     }
