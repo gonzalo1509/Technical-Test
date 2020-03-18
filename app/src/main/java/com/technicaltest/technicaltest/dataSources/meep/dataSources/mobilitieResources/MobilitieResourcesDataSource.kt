@@ -1,7 +1,7 @@
 package com.technicaltest.technicaltest.dataSources.meep.dataSources.mobilitieResources
 
-import com.technicaltest.technicaltest.dataSources.meep.Interfaces.MeetApi
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
+import com.technicaltest.technicaltest.dataSources.meep.Interfaces.MeetApi
 import io.reactivex.Single
 import retrofit2.Response
 import javax.inject.Inject

@@ -3,10 +3,11 @@ package com.technicaltest.technicaltest.app.viewModels.map
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.technicaltest.technicaltest.R
 import com.technicaltest.technicaltest.app.application.TechnicalTestApplication
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
 import com.technicaltest.technicaltest.bussiness.useCases.mobilitieResources.MobilitieResourcesUseCase
-import com.technicaltest.technicaltest.utilities.helpers.LoadingHelper
+import com.technicaltest.technicaltest.utilities.appUtilities.ApplicationResourcesUtilities
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
@@ -25,6 +26,9 @@ class MapViewModel: ViewModel() {
 
     @Inject
     lateinit var mobilitieResourcesUseCase: MobilitieResourcesUseCase
+
+    @Inject
+    lateinit var applicationResourcesUtilities: ApplicationResourcesUtilities
 
     // MutableLiveData
     private val getMobilitieResourcesLiveData: MutableLiveData<Response<List<MobilitieResourceResponseEntitie>>> =
@@ -59,8 +63,10 @@ class MapViewModel: ViewModel() {
             .subscribe(
                 { response -> getMobilitieResourcesLiveData.postValue(response as? Response<List<MobilitieResourceResponseEntitie>>)},
                 { error ->
-                    Log.e(TAG, "Ocurrió un error al obtener los recursos de movilidad", error)
-                    getMobilitieResourcesErrorLiveData.postValue("Ocurrió un error al obtener los recursos de movilidad. Inténtalo de nuevo más tarde.")
+                    Log.e(TAG, applicationResourcesUtilities.getResourceById(
+                        R.string.txt_error_when_get_mobilitie_resources), error)
+                    getMobilitieResourcesErrorLiveData.postValue(applicationResourcesUtilities.getResourceById(
+                        R.string.txt_error_when_get_mobilitie_resources))
                 }
             )
         )

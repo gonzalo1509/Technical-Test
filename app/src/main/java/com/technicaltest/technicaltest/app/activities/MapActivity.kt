@@ -15,8 +15,9 @@ import com.technicaltest.technicaltest.app.application.TechnicalTestApplication
 import com.technicaltest.technicaltest.app.customViews.map.CustomMarkerInfoWindowView
 import com.technicaltest.technicaltest.app.viewModels.map.MapViewModel
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
-import com.technicaltest.technicaltest.utilities.helpers.LoadingHelper
 import com.technicaltest.technicaltest.bussiness.enums.CompanyZoneIdTypes
+import com.technicaltest.technicaltest.utilities.appUtilities.ApplicationResourcesUtilities
+import com.technicaltest.technicaltest.utilities.helpers.CustomAlertDialog
 import kotlinx.android.synthetic.main.activity_map_layout.*
 import retrofit2.Response
 import javax.inject.Inject
@@ -33,7 +34,10 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback{
     lateinit var mapViewModel: MapViewModel
 
     @Inject
-    lateinit var loadingHelper: LoadingHelper
+    lateinit var customAlertDialog: CustomAlertDialog
+
+    @Inject
+    lateinit var applicationResourcesUtilities: ApplicationResourcesUtilities
 
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
@@ -43,7 +47,7 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback{
         Log.v(TAG, "init onCreate")
         setContentView(R.layout.activity_map_layout)
 
-        loadingHelper.initLoading(this)
+        customAlertDialog.initLoading(this)
 
         mapFragment = map as SupportMapFragment
         configMap()
@@ -54,7 +58,7 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback{
     override fun onResume() {
         Log.v(TAG, "init onResume")
 
-        loadingHelper.initLoading(this)
+        customAlertDialog.initLoading(this)
         initializeViewModel()
 
         super.onResume()
@@ -75,10 +79,8 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback{
         mapFragment.getMapAsync(this)
 
         mapFragment.getMapAsync { googleMap ->
-            run {
-                val customMarkerInfoWindowView = CustomMarkerInfoWindowView()
-                googleMap.setInfoWindowAdapter(customMarkerInfoWindowView)
-            }
+            val customMarkerInfoWindowView = CustomMarkerInfoWindowView()
+            googleMap.setInfoWindowAdapter(customMarkerInfoWindowView)
         }
     }
 
@@ -100,24 +102,26 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback{
         if(!mobilitieResourceResponse.isSuccessful){
             Log.e(TAG, "response code is not successful: ${mobilitieResourceResponse.code()}")
 
-            showErrorMessage("Ocurrió un error al obtener los recursos de movilidad. Inténtalo de nuevo más tarde.")
+            showErrorMessage(applicationResourcesUtilities.getResourceById(R.string.txt_error_when_get_mobilitie_resources))
             return
         }
 
+        googleMap.clear()
+
         val mobilitieResourceData: List<MobilitieResourceResponseEntitie>? = mobilitieResourceResponse.body()
         mobilitieResourceData?.forEach { mobilitieResourceResponseEntitie ->
-            addMarker(mobilitieResourceResponseEntitie)
+            prepareMarkers(mobilitieResourceResponseEntitie)
         }
     }
 
     private fun showErrorMessage(message: String) {
         Log.v(TAG, "showErrorMessage")
 
-        loadingHelper.dismissLoading()
-        loadingHelper.initErrorAlert(this, message)
+        customAlertDialog.dismissLoading()
+        customAlertDialog.initErrorAlert(this, message)
     }
 
-    private fun addMarker(mobilitieResourceResponseEntitie: MobilitieResourceResponseEntitie){
+    private fun prepareMarkers(mobilitieResourceResponseEntitie: MobilitieResourceResponseEntitie){
         Log.v(TAG, "init addMarker")
 
         val position = LatLng(mobilitieResourceResponseEntitie.lat, mobilitieResourceResponseEntitie.lon)
@@ -137,7 +141,7 @@ class MapActivity: AppCompatActivity(), OnMapReadyCallback{
         marker.tag = mobilitieResourceResponseEntitie
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
 
-        loadingHelper.dismissLoading()
+        customAlertDialog.dismissLoading()
     }
 
     private fun getMarkerColor(companyZoneId: Int): BitmapDescriptor? {

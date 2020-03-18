@@ -3,7 +3,6 @@ package com.technicaltest.technicaltest.bussiness.useCases.mobilitieResources
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
 import com.technicaltest.technicaltest.dataSources.meep.dataSources.mobilitieResources.MobilitieResourcesDataSource
 import io.reactivex.Single
-import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 

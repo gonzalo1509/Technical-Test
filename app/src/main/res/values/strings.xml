@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">TechnicalTest</string>
 
+    <!-- App Messages -->
+    <string name="txt_loading">Cargando…</string>
+    <string name="txt_error_title">Ups…</string>
+    <string name="txt_error_when_get_mobilitie_resources">Ocurrió un error al obtener los recursos de movilidad. Inténtalo de nuevo más tarde.</string>
+    <!-- End App Messages -->
+
     <!-- Google Maps Key -->
     <string name="google_maps_key">AIzaSyAeoFHBFZ4n6MtuB7DXkzfpgizOAu0joKg</string>
     <!-- End Google Maps Key -->
