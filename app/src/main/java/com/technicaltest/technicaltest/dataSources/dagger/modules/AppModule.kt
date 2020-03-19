@@ -8,7 +8,7 @@ import com.technicaltest.technicaltest.app.viewModels.map.MapViewModel
 import com.technicaltest.technicaltest.bussiness.useCases.mobilitieResources.MobilitieResourcesUseCase
 import com.technicaltest.technicaltest.dataSources.meep.Interfaces.MeetApi
 import com.technicaltest.technicaltest.dataSources.meep.dataSources.mobilitieResources.MobilitieResourcesDataSource
-import com.technicaltest.technicaltest.utilities.appUtilities.ApplicationResourcesUtilities
+import com.technicaltest.technicaltest.utilities.app.ApplicationResourcesUtilities
 import com.technicaltest.technicaltest.utilities.helpers.CustomAlertDialog
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
 @Module
-class AppModule (private val technicalTestApplication: TechnicalTestApplication) {
+class AppModule(private val technicalTestApplication: TechnicalTestApplication) {
 
     @Provides
     internal fun provideTechnicalTestApplication(): TechnicalTestApplication {
@@ -64,7 +64,7 @@ class AppModule (private val technicalTestApplication: TechnicalTestApplication)
     @Provides
     @Singleton
     internal fun provideLayoutInflater(technicalTestApplication: TechnicalTestApplication): LayoutInflater {
-        return technicalTestApplication.getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater
+        return technicalTestApplication.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
     @Provides

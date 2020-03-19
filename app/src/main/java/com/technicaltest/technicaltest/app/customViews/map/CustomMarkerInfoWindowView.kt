@@ -1,6 +1,7 @@
 package com.technicaltest.technicaltest.app.customViews.map
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -11,7 +12,7 @@ import com.technicaltest.technicaltest.app.application.TechnicalTestApplication.
 import com.technicaltest.technicaltest.bussiness.entities.mobilitieResources.MobilitieResourceResponseEntitie
 import javax.inject.Inject
 
-class CustomMarkerInfoWindowView: GoogleMap.InfoWindowAdapter {
+class CustomMarkerInfoWindowView : GoogleMap.InfoWindowAdapter {
 
     init {
         technicalTestApplication.appComponent.inject(this)
@@ -22,8 +23,12 @@ class CustomMarkerInfoWindowView: GoogleMap.InfoWindowAdapter {
     @Inject
     lateinit var layoutInflater: LayoutInflater
 
+    private var TAG: String = CustomMarkerInfoWindowView::class.java.simpleName
+
     @SuppressLint("InflateParams")
     override fun getInfoWindow(marker: Marker?): View {
+        Log.v(TAG, "init getInfoWindow")
+
         markerItemView = layoutInflater.inflate(R.layout.marker_info_window, null)
 
         val mobilitieResourceResponseEntitie: MobilitieResourceResponseEntitie = marker?.tag
@@ -62,6 +67,8 @@ class CustomMarkerInfoWindowView: GoogleMap.InfoWindowAdapter {
     }
 
     override fun getInfoContents(marker: Marker?): View? {
+        Log.v(TAG, "init getInfoContents")
+
         return null
     }
 }

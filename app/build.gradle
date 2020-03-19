@@ -54,12 +54,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${dagger_version}"
     kapt "com.google.dagger:dagger-android-processor:${dagger_version}"
 
-    // Logs
-    implementation "org.slf4j:slf4j-api:${slfj4_version}"
-    implementation "com.github.tony19:logback-android:${logback_android_version}"
-    testImplementation "ch.qos.logback:logback-classic:${logback_classic_version}"
-
-    // View Modelsandroid_arch_lifecycle_version
+    // View Models
     implementation "android.arch.lifecycle:runtime:${android_arch_lifecycle_version}"
     implementation "android.arch.lifecycle:extensions:${android_arch_lifecycle_version}"
     annotationProcessor "android.arch.lifecycle:compiler:${android_arch_lifecycle_version}"
@@ -70,5 +65,8 @@ dependencies {
 
     // PopUp
     implementation "com.github.f0ris.sweetalert:library:${sweetalert_library_version}"
+
+    // GDPR
+    implementation "com.karumi:dexter:${dexter_version}"
 
 }

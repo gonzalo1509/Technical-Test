@@ -6,7 +6,7 @@ import android.util.Log
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.technicaltest.technicaltest.R
 import com.technicaltest.technicaltest.app.application.TechnicalTestApplication.Companion.technicalTestApplication
-import com.technicaltest.technicaltest.utilities.appUtilities.ApplicationResourcesUtilities
+import com.technicaltest.technicaltest.utilities.app.ApplicationResourcesUtilities
 import javax.inject.Inject
 
 class CustomAlertDialog {
@@ -21,11 +21,12 @@ class CustomAlertDialog {
     @Inject
     lateinit var applicationResourcesUtilities: ApplicationResourcesUtilities
 
-    fun initLoading(activity: Activity){
+    fun initLoading(activity: Activity) {
         Log.v(TAG, "init initLoading")
 
-        if(isInitialized())
+        if (isInitialized()) {
             dismissLoading()
+        }
 
         initInstanceLoading(
             activity,
@@ -33,19 +34,22 @@ class CustomAlertDialog {
         )
 
         sweetAlertDialog.progressHelper.setBarColor(
-            Color.parseColor(applicationResourcesUtilities.getResourceById(R.color.colorGreen)))
+            Color.parseColor(applicationResourcesUtilities.getResourceById(R.color.colorGreen))
+        )
         sweetAlertDialog.titleText = applicationResourcesUtilities.getResourceById(
-            R.string.txt_loading)
+            R.string.txt_loading
+        )
         sweetAlertDialog.setCancelable(false)
 
         sweetAlertDialog.show()
     }
 
-    fun initErrorAlert(activity: Activity, message: String){
+    fun initErrorAlert(activity: Activity, message: String) {
         Log.v(TAG, "init initErrorAlert")
 
-        if(isInitialized())
+        if (isInitialized()) {
             dismissLoading()
+        }
 
         initInstanceLoading(
             activity,
@@ -53,36 +57,39 @@ class CustomAlertDialog {
         )
 
         sweetAlertDialog.progressHelper.setBarColor(
-            Color.parseColor(applicationResourcesUtilities.getResourceById(R.color.colorRed)))
+            Color.parseColor(applicationResourcesUtilities.getResourceById(R.color.colorRed))
+        )
         sweetAlertDialog.titleText = applicationResourcesUtilities.getResourceById(
-            R.string.txt_error_title)
+            R.string.txt_error_title
+        )
         sweetAlertDialog.contentText = message
         sweetAlertDialog.setCancelable(false)
         sweetAlertDialog.show()
     }
 
-    fun dismissLoading(){
+    fun dismissLoading() {
         Log.v(TAG, "init dismissLoading")
 
-        if(sweetAlertDialog.isShowing){
+        if (sweetAlertDialog.isShowing) {
             Log.d(TAG, "Loading is showing, go to dismiss...")
 
             sweetAlertDialog.dismissWithAnimation()
         }
     }
 
-    private fun initInstanceLoading(activity: Activity, type: Int){
+    private fun initInstanceLoading(activity: Activity, type: Int) {
         Log.v(TAG, "init initInstanceLoading")
 
         sweetAlertDialog = SweetAlertDialog(
-            activity, type)
+            activity, type
+        )
     }
 
-    private fun isInitialized(): Boolean{
+    private fun isInitialized(): Boolean {
         Log.v(TAG, "init isInitialized")
 
-        if(::sweetAlertDialog.isInitialized){
-            Log.d(TAG, "Loading is showing")
+        if (::sweetAlertDialog.isInitialized) {
+            Log.d(TAG, "Loading is initialized")
             return true
         }
 

@@ -10,8 +10,9 @@ import retrofit2.http.Query
 interface MeetApi {
 
     @GET("/tripplan/api/v1/routers/{location}/resources")
-    fun getMobilitiesResources(@Path("location") location: String,
-                               @Query("lowerLeftLatLon") lowerLeftLatLon: String,
-                               @Query("upperRightLatLon") upperRightLatLon: String)
-                                : Single<Response<List<MobilitieResourceResponseEntitie?>>>
+    fun getMobilitiesResources(
+        @Path("location") location: String,
+        @Query("lowerLeftLatLon") lowerLeftLatLon: String,
+        @Query("upperRightLatLon") upperRightLatLon: String
+    ): Single<Response<List<MobilitieResourceResponseEntitie>>>
 }

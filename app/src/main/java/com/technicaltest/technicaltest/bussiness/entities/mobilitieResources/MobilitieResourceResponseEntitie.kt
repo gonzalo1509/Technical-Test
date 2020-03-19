@@ -1,6 +1,6 @@
 package com.technicaltest.technicaltest.bussiness.entities.mobilitieResources
 
-data class MobilitieResourceResponseEntitie (
+data class MobilitieResourceResponseEntitie(
     val id: String,
     val name: String,
     val x: Double,
