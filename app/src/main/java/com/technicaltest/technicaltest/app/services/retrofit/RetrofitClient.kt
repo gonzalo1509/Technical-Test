@@ -1,5 +1,6 @@
 package com.technicaltest.technicaltest.app.services.retrofit
 
+import android.util.Log
 import com.technicaltest.technicaltest.BuildConfig
 import com.technicaltest.technicaltest.dataSources.meep.Interfaces.MeetApi
 import okhttp3.OkHttpClient
@@ -10,7 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
+    private val TAG: String = RetrofitClient::class.java.simpleName
+
     fun provideRetrofitClientMeetApi(): MeetApi {
+        Log.v(TAG, "init provideRetrofitClientMeetApi")
+
         val httpClientBuilder = OkHttpClient.Builder().cache(null)
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
@@ -22,6 +27,7 @@ object RetrofitClient {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         return retrofit.create<MeetApi>(
-            MeetApi::class.java)
+            MeetApi::class.java
+        )
     }
 }

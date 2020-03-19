@@ -1,17 +1,18 @@
 package com.technicaltest.technicaltest.app.application
 
 import android.app.Application
-import android.content.ContentValues.TAG
 import android.util.Log
 import com.technicaltest.technicaltest.dataSources.dagger.components.AppComponent
 import com.technicaltest.technicaltest.dataSources.dagger.components.DaggerAppComponent
 import com.technicaltest.technicaltest.dataSources.dagger.modules.AppModule
 
-class TechnicalTestApplication: Application() {
+class TechnicalTestApplication : Application() {
 
-    companion object{
+    companion object {
         lateinit var technicalTestApplication: TechnicalTestApplication
     }
+
+    private val TAG: String = TechnicalTestApplication::class.java.simpleName
 
     lateinit var appComponent: AppComponent
 

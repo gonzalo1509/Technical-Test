@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.technicaltest.technicaltest">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <application
         android:name=".app.application.TechnicalTestApplication"
@@ -11,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="true">
+        android:fullBackupContent="true"
+        tools:replace="android:icon" >
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -25,7 +30,8 @@
             android:name=".app.activities.MapActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
